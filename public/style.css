@@ -1,0 +1,265 @@
+@import url("https://fonts.googleapis.com/css?family=Poppins:400,500,600,700&display=swap");
+* {
+  font-family: "poppins", sans-serif;
+}
+body[data-light-mode="dark"] {
+  background-color: #1a1a1a;
+  transition: 1s ease;
+}
+body[data-light-mode="dark"] .checkbox {
+  background-color: #5e35b1;
+  transition: 2s ease;
+}
+body[data-light-mode="dark"] {
+  background-color: #010105;
+  transition: 2s ease;
+}
+body[data-light-mode="dark"] #app-name {
+  color: #e1eaea;
+}
+body[data-light-mode="dark"] .nav-link {
+  font-size: 20px;
+  font-weight: 500;
+  color: #e1eaea;
+  letter-spacing: 1px;
+  padding: 0px 12px;
+}
+body[data-light-mode="dark"] .nav-link:hover {
+  color: orange;
+  transition: 0.5s ease;
+}
+body[data-light-mode="dark"] .about {
+  color: #e1eaea;
+  font-size: 18px;
+}
+body[data-light-mode="dark"] .heading {
+  color: #e1eaea;
+  letter-spacing: 1px;
+  font-weight: 900px;
+}
+body[data-light-mode="dark"] .login {
+  box-shadow: 5px 5px 2px 2px #e1eaea;
+}
+body[data-light-mode="dark"] #logo {
+  color: #e1eaea;
+  font-size: 40px;
+}
+body[data-light-mode="dark"] .explore {
+  color: #e1eaea;
+}
+body[data-light-mode="dark"] .application {
+  background-color: #1a1a1a;
+}
+body[data-light-mode="dark"] .username {
+  background-color: rgba(0, 0, 0, 0.3);
+}
+body[data-light-mode="dark"] .password {
+  background-color: rgba(0, 0, 0, 0.3);
+}
+body[data-light-mode="dark"] .mobile > p {
+  color: #e1eaea;
+}
+body[data-light-mode="dark"] .card {
+  background-color: rgba(0, 0, 0, 0.3);
+}
+body[data-light-mode="dark"] .edit {
+  color: #e1eaea;
+}
+body[data-light-mode="dark"] .card-title {
+  color: #e1eaea;
+}
+body[data-light-mode="dark"] .profile-details > ul > li > a {
+  color: #e1eaea;
+}
+body[data-light-mode="dark"] .personal-details > ul > li {
+  color: #e1eaea;
+}
+body[data-light-mode="dark"] .user-details > ul > li > a {
+  color: #e1eaea;
+}
+
+body[data-light-mode="dark"] .error {
+  color: #e1eaea;
+  font-size: 150px;
+}
+
+/* Home page */
+
+.setting {
+  font-size: 30px;
+}
+.dropdown-menu {
+  background-color: #ffc299;
+}
+.dropdown {
+  display: block;
+
+  transition: transform 700ms ease, opacity 900ms ease;
+  transition: 0.35s cubic-bezier(0.54, 1.6, 0.5, 1);
+  position: absolute;
+  bottom: 0;
+}
+#logo {
+  font-size: 40px;
+}
+.navbar {
+  width: 100%;
+}
+.dropdown {
+  list-style-type: none;
+}
+.nav-link {
+  font-size: 20px;
+  font-weight: 500;
+  color: #262626;
+  letter-spacing: 1px;
+  padding: 0px 12px;
+}
+#app-name > span {
+  color: orange;
+}
+#app-name {
+  font-size: 30px;
+  font-weight: 500px;
+  color: #262626;
+  letter-spacing: 1px;
+  padding: 0;
+}
+.nav-link:hover {
+  color: #fba70b;
+  transition: 1s ease;
+}
+.container {
+  margin-top: 150px;
+}
+.heading {
+  color: #262626;
+  letter-spacing: 1px;
+  font-weight: 900px;
+}
+.heading > span {
+  color: orange;
+}
+.login {
+  border-radius: 25px;
+  width: 400px;
+  height: 430px;
+}
+.about {
+  color: #262626;
+  font-size: 18px;
+}
+/* .explore{
+    color:#262626;
+} */
+.mobile > h2 {
+  color: orange;
+}
+.mobile > p {
+  color: #262626;
+}
+form > input {
+  width: 100%;
+  height: 40px;
+  border: 0;
+  margin: 20px 0;
+  font-size: 20px;
+}
+/* #forgot-password{
+    font-size:15px;
+} */
+#border {
+  height: 50px;
+  color: white;
+}
+#google {
+  margin-left: 10px;
+  font-size: 20px;
+  color: rgb(84, 84, 238);
+}
+
+/* dashboard */
+
+.contact {
+  font-size: 40px;
+  color: orange;
+}
+.card {
+  margin: 20px;
+}
+.edit {
+  color: #262626;
+  font-size: 20px;
+}
+.card-title {
+  font-size: 30px;
+  color: #262626;
+}
+.card-subtitle {
+  color: orange;
+}
+.profile-details > ul > li > a {
+  font-size: 20px;
+  letter-spacing: 1px;
+  text-decoration: none;
+  color: #262626;
+  /* margin:20px;  */
+  padding: 0.25rem;
+  letter-spacing: 1px;
+}
+.personal-details > ul > li {
+  font-size: 20px;
+  letter-spacing: 1px;
+  list-style-type: none;
+  color: #262626;
+  padding: 0.25rem;
+}
+.credentials > h3 {
+  margin: 20px;
+  padding: 0.25rem;
+  color: orange;
+}
+.user-details > ul > li > a {
+  text-decoration: none;
+  font-size: 18px;
+  letter-spacing: 1px;
+  color: #262626;
+}
+.profile-details > ul > li,
+.user-details > ul > li {
+  list-style-type: none;
+}
+.profile-details > ul > li :hover {
+  color: orange;
+  cursor: pointer;
+  border-radius: 7px;
+  box-shadow: 0 0 1.4rem 0 rgba(0, 0, 0, 0.3);
+  transform: translateY(-0.1rem);
+  transition: transform 150ms;
+}
+.user-details > ul > li :hover {
+  color: orange;
+  cursor: pointer;
+  border-radius: 5px;
+  box-shadow: 0 0 1.4rem 0 rgba(0, 0, 0, 0.3);
+  transform: translateY(-0.1rem);
+  transition: transform 150ms;
+}
+
+/* 404-page not found */
+
+/* .dashboard{
+   font-size:25px;
+} */
+.error {
+  color: #262626;
+  font-size: 150px;
+}
+.message {
+  color: orange;
+  font-size: 22px;
+}
+.opps {
+  color: orange;
+  font-size: 30px;
+}
