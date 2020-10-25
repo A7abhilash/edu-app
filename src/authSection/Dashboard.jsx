@@ -6,6 +6,7 @@ import MyAnswers from "./dashboard/MyAnswers";
 import MyArticles from "./dashboard/MyArticles";
 import MyBookmarks from "./dashboard/MyBookmarks";
 import UserProfile from "./containers/UserProfile";
+import ReportSection from "./dashboard/ReportSection";
 import SelectOptions from "./dashboard/SelectOptions";
 
 function Dashboard({ LOGGEDINUSER }) {
@@ -28,6 +29,8 @@ function Dashboard({ LOGGEDINUSER }) {
         return <MyArticles LOGGEDINUSER={LOGGEDINUSER} />;
       case "bookmarks":
         return <MyBookmarks LOGGEDINUSER={LOGGEDINUSER} />;
+      case "reports":
+        return <ReportSection LOGGEDINUSER={LOGGEDINUSER} />;
       default:
         return <MyProfile LOGGEDINUSER={LOGGEDINUSER} />;
     }

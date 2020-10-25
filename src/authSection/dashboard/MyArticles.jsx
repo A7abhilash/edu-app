@@ -1,15 +1,25 @@
 import React, { useEffect, useRef, useState } from "react";
-import { deleteArticle, postArticle } from "../../hooks/useArticlesDB";
+import {
+  deleteArticle,
+  editArticle,
+  getSelectedArticle,
+  postArticle,
+} from "../../hooks/useArticlesDB";
+import ArticleModal from "../articles/ArticleModal";
+import Loader from "../containers/Loader";
 
 const firebase = require("firebase");
 
 function MyArticles({ LOGGEDINUSER }) {
+  const [loading, setLoading] = useState(true);
   const [allArticles, setAllArticles] = useState([]);
-  // const [isEdit, setIsEdit] = useState(false);
-  // const [editID, seteditID] = useState("");
+  const [isEdit, setIsEdit] = useState(false);
+  const [editID, setEditID] = useState("");
+  const [modalAID, setModalAID] = useState("");
 
   //get realtime updates on articles when posted
   useEffect(() => {
+    setLoading(true);
     try {
       firebase
         .firestore()
@@ -18,17 +28,16 @@ function MyArticles({ LOGGEDINUSER }) {
         .onSnapshot((snapshot) => {
           let articles = [];
           snapshot.docs.forEach((doc) => {
-            // console.log(
-            //   new Date(doc.data().createdAt.toMillis()).toDateString()
-            // );
             let article = doc.data();
             article["AID"] = doc.id;
             articles.push(article);
           });
           setAllArticles(articles);
+          setLoading(false);
         });
     } catch (error) {
-      console.error(error);
+      alert(error.message);
+      setLoading(false);
     }
   }, []);
 
@@ -53,6 +62,7 @@ function MyArticles({ LOGGEDINUSER }) {
       category: article_category_ref.current.value,
       subject: article_subject_ref.current.value,
       userId: LOGGEDINUSER.UID,
+      postedBy: LOGGEDINUSER.displayName,
       createdAt: "",
     };
 
@@ -69,13 +79,56 @@ function MyArticles({ LOGGEDINUSER }) {
   const handleQuestionDelete = async (AID, userId) => {
     if (userId === LOGGEDINUSER.UID) {
       if (window.confirm("Are you sure to delete this article?")) {
-        // console.log(AID);
         let response = await deleteArticle(AID);
         alert(response.message);
       }
     } else {
-      alert("Nice Try!");
+      alert("Not Permitted!");
     }
+  };
+
+  //Edit a question
+  const handleEdit = async (AID, userId) => {
+    if (userId === LOGGEDINUSER.UID) {
+      setIsEdit(true);
+      let response = await getSelectedArticle(AID);
+
+      if (!response) {
+        setIsEdit(false);
+        return alert("Question not found!");
+      }
+      setEditID(AID);
+      article_title_ref.current.value = response.title;
+      article_body_ref.current.value = response.body;
+      article_category_ref.current.value = response.category;
+      article_subject_ref.current.value = response.subject;
+    } else {
+      alert("Not Permitted!");
+    }
+  };
+  const handleArticleEdit = async (event) => {
+    event.preventDefault();
+    let response = await getSelectedArticle(editID);
+
+    if (!response) {
+      return "";
+    }
+
+    response.title = article_title_ref.current.value;
+    response.body = article_body_ref.current.value;
+    response.category = article_category_ref.current.value;
+    response.subject = article_subject_ref.current.value;
+    let data = await editArticle(editID, response);
+    alert(data.message);
+  };
+
+  //open the modal to read an article
+  const openArticleModal = (AID) => {
+    setModalAID(AID);
+  };
+  //close the modal
+  const closeArticleModal = () => {
+    setModalAID("");
   };
 
   return (
@@ -88,10 +141,12 @@ function MyArticles({ LOGGEDINUSER }) {
           data-toggle="modal"
           data-target="#modal-article"
         >
-          Post an Article
+          <i className="fas fa-pen"></i> Post an Article
         </button>
       </div>
-      {allArticles.length ? (
+      {loading ? (
+        <Loader height={30} />
+      ) : allArticles.length ? (
         allArticles.map((element) => (
           <div
             key={element.AID}
@@ -99,14 +154,20 @@ function MyArticles({ LOGGEDINUSER }) {
           >
             <div className="d-block mb-2 mb-md-0">
               <p className="lead">{element.title}</p>
-              <button className="btn btn-sm btn-outline-success">
+              <button
+                className="btn btn-sm btn-outline-success"
+                data-toggle="modal"
+                data-target="#modal-article-read"
+                onClick={() => openArticleModal(element.AID)}
+              >
                 Read Article<i className="fas fa-book-open ml-1"></i>
               </button>
               <button
                 // onClick={() => handleEdit(element.AID, element.userId)}
                 className="ml-2 btn border-0 text-info"
                 data-toggle="modal"
-                data-target="#modal-question"
+                data-target="#modal-article"
+                onClick={() => handleEdit(element.AID, element.userId)}
               >
                 Edit
               </button>
@@ -120,10 +181,10 @@ function MyArticles({ LOGGEDINUSER }) {
               </button>
             </div>
             <div className="text-muted ml-auto">
-              <h6 className="text-muted">Category: {element.category} </h6>
-              <h6 className="text-muted">Subject: {element.subject}</h6>
+              <h6>Category: {element.category} </h6>
+              <h6>Subject: {element.subject}</h6>
               <p style={{ fontSize: "0.8rem" }}>
-                Posted on:{" "}
+                <i className="far fa-clock"></i>{" "}
                 {element.createdAt &&
                   new Date(element.createdAt.toMillis()).toDateString()}
               </p>
@@ -147,7 +208,7 @@ function MyArticles({ LOGGEDINUSER }) {
           <div className="modal-content bg-dark text-white">
             <div className="modal-header align-items-center">
               <h4 className="modal-title text-warning" id="staticBackdropLabel">
-                Post an Article
+                {!isEdit ? "Post an Article" : "Edit your Article"}
               </h4>
               <button
                 type="button"
@@ -159,7 +220,7 @@ function MyArticles({ LOGGEDINUSER }) {
               </button>
             </div>
             <div className="modal-body text-left">
-              <form onSubmit={handleArticlePost}>
+              <form onSubmit={!isEdit ? handleArticlePost : handleArticleEdit}>
                 <div className="form-group">
                   <label htmlFor="settings-category">Enter the Category:</label>
                   <input
@@ -185,15 +246,14 @@ function MyArticles({ LOGGEDINUSER }) {
 
                 <div className="form-group">
                   <label htmlFor="settings-category">Enter the Title:</label>
-                  <textarea
+                  <input
                     type="text"
                     id="settings-category"
                     ref={article_title_ref}
                     className="form-control"
                     placeholder="What's your topic?"
-                    rows="2"
                     required
-                  ></textarea>
+                  />
                 </div>
                 <div className="form-group">
                   <label htmlFor="settings-category">
@@ -218,7 +278,7 @@ function MyArticles({ LOGGEDINUSER }) {
                     Cancel
                   </button>
                   <button type="submit" className="btn btn-success float-right">
-                    <strong>SAVE</strong>
+                    <strong>{!isEdit ? "POST" : "EDIT"}</strong>
                   </button>
                 </div>
               </form>
@@ -226,6 +286,13 @@ function MyArticles({ LOGGEDINUSER }) {
           </div>
         </div>
       </div>
+
+      {/* Modal for reading an article */}
+      <ArticleModal
+        AID={modalAID}
+        closeModal={closeArticleModal}
+        LOGGEDINUSER={LOGGEDINUSER}
+      />
     </React.Fragment>
   );
 }

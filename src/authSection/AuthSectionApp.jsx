@@ -5,6 +5,7 @@ import Navbar from "../authSection/Navbar";
 import Dashboard from "./Dashboard";
 import PublicQuestions from "./questions/PublicQuestions";
 import PublicArticles from "./articles/PublicArticles";
+import ProfileVisit from "./users/ProfileVisit";
 
 function AuthSectionApp({ handleSignOutButton, LOGGEDINUSER }) {
   if (!LOGGEDINUSER) return "";
@@ -21,9 +22,23 @@ function AuthSectionApp({ handleSignOutButton, LOGGEDINUSER }) {
             <Dashboard {...props} LOGGEDINUSER={LOGGEDINUSER} />
           )}
         />
-        <Route exact path="/questions" component={PublicQuestions} />
-        <Route exact path="/articles" component={PublicArticles} />
-        <Route exact path="/404error" component={PublicArticles} />
+        <Route
+          exact
+          path="/questions"
+          render={() => <PublicQuestions LOGGEDINUSER={LOGGEDINUSER} />}
+        />
+        <Route
+          exact
+          path="/articles"
+          render={() => <PublicArticles LOGGEDINUSER={LOGGEDINUSER} />}
+        />
+        <Route
+          exact
+          path="/users/:id"
+          render={(props) => (
+            <ProfileVisit {...props} LOGGEDINUSER={LOGGEDINUSER} />
+          )}
+        />
       </Switch>
     </Router>
   );

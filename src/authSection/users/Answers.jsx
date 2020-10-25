@@ -1,49 +1,8 @@
-import React, { useEffect, useState } from "react";
-import { getPublicQuestions } from "../../hooks/useQuestionDB";
-import Loader from "../containers/Loader";
+import React, { useState } from "react";
 import QuestionModal from "../questions/QuestionModal";
 
-function MyAnswers({ LOGGEDINUSER }) {
-  const [loading, setLoading] = useState(true);
-  const [allAnswers, setAllAnswers] = useState([]);
+function Answers({ answers, LOGGEDINUSER }) {
   const [modalQID, setModalQID] = useState("");
-
-  const fetchAnswers = async () => {
-    let questions = await getPublicQuestions();
-    let answers = [];
-
-    questions.forEach((question) => {
-      question.answers.forEach((element) => {
-        if (element.userId === LOGGEDINUSER.UID) {
-          let answer = {
-            question: question.question,
-            QID: question.QID,
-            postedBy: question.postedBy,
-            userId: question.userId,
-            category: question.category,
-            subject: question.subject,
-            answer: element.content,
-            id: element.id,
-            createdAt: question.createdAt,
-          };
-          answers = [...answers, answer];
-        }
-      });
-    });
-
-    setAllAnswers(answers);
-    setLoading(false);
-  };
-
-  useEffect(() => {
-    setLoading(true);
-    try {
-      fetchAnswers();
-    } catch (error) {
-      setLoading(false);
-      alert(error.message);
-    }
-  }, []);
 
   //open the modal to read an article
   const openQuestionModal = (QID) => {
@@ -56,11 +15,8 @@ function MyAnswers({ LOGGEDINUSER }) {
 
   return (
     <React.Fragment>
-      <h2>My Answers</h2>
-      {loading ? (
-        <Loader height={30} />
-      ) : allAnswers.length ? (
-        allAnswers.map((element) => (
+      {answers.length ? (
+        answers.map((element) => (
           <div
             key={element.QID}
             className="text-warning my-3 p-2 shadow-lg bg-dark rounded d-md-flex align-items-start"
@@ -93,7 +49,6 @@ function MyAnswers({ LOGGEDINUSER }) {
       ) : (
         <p className="text-muted">You haven't posted any answers...</p>
       )}
-
       {/* Modal for reading question and answers */}
       <QuestionModal
         QID={modalQID}
@@ -104,4 +59,4 @@ function MyAnswers({ LOGGEDINUSER }) {
   );
 }
 
-export default MyAnswers;
+export default Answers;

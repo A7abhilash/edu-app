@@ -8,15 +8,20 @@ import {
   getSelectedQuestion,
   postQuestion,
 } from "../../hooks/useQuestionDB";
+import Loader from "../containers/Loader";
+import QuestionModal from "../questions/QuestionModal";
 const firebase = require("firebase");
 
 function MyQuestions({ LOGGEDINUSER }) {
+  const [loading, setLoading] = useState(true);
   const [allQuestions, setAllQuestions] = useState([]);
   const [isEdit, setIsEdit] = useState(false);
   const [editID, seteditID] = useState("");
+  const [modalQID, setModalQID] = useState("");
 
   //Get realtime update of questions when posted
   useEffect(() => {
+    setLoading(true);
     try {
       firebase
         .firestore()
@@ -25,17 +30,16 @@ function MyQuestions({ LOGGEDINUSER }) {
         .onSnapshot((snapshot) => {
           let questions = [];
           snapshot.docs.forEach((doc) => {
-            // console.log(
-            //   new Date(doc.data().createdAt.toMillis()).toDateString()
-            // );
             let question = doc.data();
             question["QID"] = doc.id;
             questions.push(question);
           });
           setAllQuestions(questions);
+          setLoading(false);
         });
     } catch (error) {
-      console.error(error);
+      alert(error.message);
+      setLoading(false);
     }
   }, []);
 
@@ -57,6 +61,7 @@ function MyQuestions({ LOGGEDINUSER }) {
       category: question_category_ref.current.value,
       subject: question_subject_ref.current.value,
       userId: LOGGEDINUSER.UID,
+      postedBy: LOGGEDINUSER.displayName,
       answers: [],
       createdAt: "",
     };
@@ -72,12 +77,11 @@ function MyQuestions({ LOGGEDINUSER }) {
   const handleQuestionDelete = async (QID, userId) => {
     if (userId === LOGGEDINUSER.UID) {
       if (window.confirm("Are you sure to delete this question?")) {
-        // console.log(QID);
         let response = await deleteQuestion(QID);
         alert(response.message);
       }
     } else {
-      alert("Nice Try!");
+      alert("Not Permitted!");
     }
   };
 
@@ -96,7 +100,7 @@ function MyQuestions({ LOGGEDINUSER }) {
       question_category_ref.current.value = response.category;
       question_subject_ref.current.value = response.subject;
     } else {
-      alert("Nice try!");
+      alert("Not Permitted!");
     }
   };
   const handleQuestionEdit = async (event) => {
@@ -114,6 +118,15 @@ function MyQuestions({ LOGGEDINUSER }) {
     alert(data.message);
   };
 
+  //open the modal to read an article
+  const openQuestionModal = (QID) => {
+    setModalQID(QID);
+  };
+  //close the modal
+  const closeQuestionModal = () => {
+    setModalQID("");
+  };
+
   return (
     <React.Fragment>
       <div className="d-block d-md-flex align-items-start">
@@ -124,10 +137,12 @@ function MyQuestions({ LOGGEDINUSER }) {
           data-toggle="modal"
           data-target="#modal-question"
         >
-          Post a Question
+          <i className="fas fa-question"></i> Post a Question
         </button>
       </div>
-      {allQuestions.length ? (
+      {loading ? (
+        <Loader height={30} />
+      ) : allQuestions.length ? (
         allQuestions.map((element) => (
           <div
             key={element.QID}
@@ -135,7 +150,12 @@ function MyQuestions({ LOGGEDINUSER }) {
           >
             <div className="d-block mb-2 mb-md-0">
               <p className="lead">{element.question}</p>
-              <button className="btn btn-sm btn-outline-success">
+              <button
+                className="btn btn-sm btn-outline-success"
+                data-target="#modal-question-read"
+                data-toggle="modal"
+                onClick={() => openQuestionModal(element.QID)}
+              >
                 Read Answers<i className="fas fa-book-open ml-1"></i>
               </button>{" "}
               <button
@@ -159,7 +179,7 @@ function MyQuestions({ LOGGEDINUSER }) {
               <h6 className="text-muted">Category: {element.category} </h6>
               <h6 className="text-muted">Subject: {element.subject}</h6>
               <p style={{ fontSize: "0.8rem" }}>
-                Posted on:{" "}
+                <i className="far fa-clock"></i>{" "}
                 {element.createdAt &&
                   new Date(element.createdAt.toMillis()).toDateString()}
               </p>
@@ -241,7 +261,7 @@ function MyQuestions({ LOGGEDINUSER }) {
                     Cancel
                   </button>
                   <button type="submit" className="btn btn-success float-right">
-                    <strong> {!isEdit ? "Post" : "Edit"}</strong>
+                    <strong> {!isEdit ? "POST" : "EDIT"}</strong>
                   </button>
                 </div>
               </form>
@@ -249,6 +269,13 @@ function MyQuestions({ LOGGEDINUSER }) {
           </div>
         </div>
       </div>
+
+      {/* Modal for reading question and answers */}
+      <QuestionModal
+        QID={modalQID}
+        closeModal={closeQuestionModal}
+        LOGGEDINUSER={LOGGEDINUSER}
+      />
     </React.Fragment>
   );
 }

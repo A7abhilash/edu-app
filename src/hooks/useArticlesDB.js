@@ -14,29 +14,51 @@ export async function postArticle(article) {
       };
     }
   } catch (error) {
-    console.error(error);
+    
     return { type: "fail", message: error.message };
   }
 }
 
-//desc    GET all the articles to render on public route    //PENDING...
+//desc    EDIT an article
+export async function editArticle(AID, article) {
+  try {
+    await firebase.firestore().collection("articles").doc(AID).update({
+      category: article.category,
+      subject: article.subject,
+      title: article.title,
+      body: article.body,
+    });
+    return {
+      type: "success",
+      message: "Article has been edit!",
+    };
+  } catch (error) {
+    
+    return {
+      type: "fail",
+      message: error.message,
+    };
+  }
+}
+
+//desc    GET all the articles to render on public route
 export async function getPublicArticles() {
   try {
     let articles = [];
     let data = await firebase.firestore().collection("articles").get();
     data.docs.map((doc) => {
       let article = doc.data();
-      article["QID"] = doc.id;
+      article["AID"] = doc.id;
       articles.push(article);
     });
     return articles;
   } catch (error) {
-    console.error(error);
+    
     alert(error.message);
   }
 }
 
-//desc    GET an article with unique id    //PENDING...
+//desc    GET an article with unique id
 export async function getSelectedArticle(id) {
   try {
     // id = "jaksdhji";
@@ -47,7 +69,8 @@ export async function getSelectedArticle(id) {
       .get();
     return details.data();
   } catch (error) {
-    console.error(error);
+    
+    return { type: "fail", message: error.message };
   }
 }
 
@@ -60,7 +83,32 @@ export async function deleteArticle(AID) {
       message: "Article has been deleted!",
     };
   } catch (error) {
-    console.error(error);
+    
+    return {
+      type: "fail",
+      message: error.message,
+    };
+  }
+}
+
+//desc    GET all the articles of user when visited
+export async function getArticlesOfUser(userId) {
+  try {
+    let snapshot = await firebase
+      .firestore()
+      .collection("articles")
+      .where("userId", "==", userId)
+      .get();
+
+    let articles = [];
+    snapshot.docs.forEach((doc) => {
+      let article = doc.data();
+      article["AID"] = doc.id;
+      articles.push(article);
+    });
+    return articles;
+  } catch (error) {
+    
     return {
       type: "fail",
       message: error.message,

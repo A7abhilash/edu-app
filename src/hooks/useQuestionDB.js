@@ -14,7 +14,7 @@ export async function postQuestion(question) {
       };
     }
   } catch (error) {
-    console.error(error);
+    
     return { type: "fail", message: error.message };
   }
 }
@@ -32,7 +32,7 @@ export async function editQuestion(QID, question) {
       message: "Question has been edit!",
     };
   } catch (error) {
-    console.error(error);
+    
     return {
       type: "fail",
       message: error.message,
@@ -40,10 +40,26 @@ export async function editQuestion(QID, question) {
   }
 }
 
-//desc    GET all the questions of user when visited  //PENDING...
+//desc    GET all the questions of user when visited
 export async function getQuestionsOfUser(userId) {
-  console.log(userId);
-  return "Got ya!";
+  try {
+    let snapshot = await firebase
+      .firestore()
+      .collection("questions")
+      .where("userId", "==", userId)
+      .get();
+
+    let questions = [];
+    snapshot.docs.forEach((doc) => {
+      let question = doc.data();
+      question["QID"] = doc.id;
+      questions.push(question);
+    });
+    return questions;
+  } catch (error) {
+    
+    return { type: "fail", message: error.message };
+  }
 }
 
 //desc    GET all the questions to render on public route
@@ -51,14 +67,14 @@ export async function getPublicQuestions() {
   try {
     let questions = [];
     let data = await firebase.firestore().collection("questions").get();
-    data.docs.map((doc) => {
+    data.docs.forEach((doc) => {
       let question = doc.data();
       question["QID"] = doc.id;
       questions.push(question);
     });
     return questions;
   } catch (error) {
-    console.error(error);
+    
     alert(error.message);
   }
 }
@@ -74,7 +90,8 @@ export async function getSelectedQuestion(id) {
       .get();
     return details.data();
   } catch (error) {
-    console.error(error);
+    
+    return { type: "fail", message: error.message };
   }
 }
 
@@ -87,7 +104,7 @@ export async function deleteQuestion(QID) {
       message: "Question has been deleted!",
     };
   } catch (error) {
-    console.error(error);
+    
     return {
       type: "fail",
       message: error.message,

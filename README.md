@@ -1,5 +1,11 @@
 > > All the code are in src folder and App.js is the starting file
 
+## To get started;
+
+####clone this repo  
+####RUN npm install  
+####RUN npm start
+
 -------------------------------------Additional-----------------------------------------  
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 

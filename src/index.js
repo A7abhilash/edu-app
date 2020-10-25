@@ -4,7 +4,9 @@ import App from "./App";
 
 const firebase = require("firebase");
 // Your web app's Firebase configuration
-const firebaseConfig = {};
+const firebaseConfig = {
+  
+};
 // Initialize Firebase
 firebase.initializeApp(firebaseConfig);
 

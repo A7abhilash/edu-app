@@ -21,7 +21,7 @@ function MyProfile({ LOGGEDINUSER }) {
   };
 
   useEffect(() => {
-    try {
+    
       firebase
         .firestore()
         .collection("users")
@@ -29,9 +29,7 @@ function MyProfile({ LOGGEDINUSER }) {
         .onSnapshot((snapshot) => {
           setUserDetails(snapshot.data());
         });
-    } catch (error) {
-      console.error(error);
-    }
+    
   }, []);
 
   return (
@@ -43,7 +41,7 @@ function MyProfile({ LOGGEDINUSER }) {
           data-target="#modal-settings"
           className="btn btn-secondary btn-sm ml-auto mt-1"
         >
-          Profile Settings
+          <i className="fas fa-sliders-h"></i> Profile Settings
         </button>
       </div>
 

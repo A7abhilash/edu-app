@@ -2,6 +2,7 @@ import { saveUser } from "./useUserDB";
 
 const firebase = require("firebase");
 
+//SIGN IN
 export function userSignIn() {
   //Providing Google Strategy
   const provider = new firebase.auth.GoogleAuthProvider();
@@ -14,18 +15,17 @@ export function userSignIn() {
       saveUser(credentials.user);
     })
     .catch((error) => {
-      // console.log(error);
       setTimeout(() => {
         alert(error.message);
       }, 1000);
     });
 }
 
+//SIGN OUT
 export async function userSignOut() {
   try {
     await firebase.auth().signOut();
   } catch (error) {
-    console.log(error);
     setTimeout(() => {
       alert(error.message);
     }, 1000);

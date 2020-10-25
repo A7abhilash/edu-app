@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import "./App.css";
 import AuthSectionApp from "./authSection/AuthSectionApp";
+import Loader from "./authSection/containers/Loader";
 import GuestSection from "./guestSection/GuestSection";
 import { userSignIn, userSignOut } from "./hooks/useAuth";
 import { getLoggedInUserInfo } from "./hooks/useUserDB";
@@ -52,11 +53,7 @@ function App() {
   }, []);
 
   return loading ? (
-    <div className="d-flex justify-content-center align-items-center vh-100">
-      <div className="spinner-border text-warning" role="status">
-        <span className="sr-only">Loading...</span>
-      </div>
-    </div>
+    <Loader height={100} />
   ) : state.isAuthenticated ? (
     <AuthSectionApp
       handleSignOutButton={signOut}

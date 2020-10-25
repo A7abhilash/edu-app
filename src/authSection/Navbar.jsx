@@ -9,34 +9,38 @@ function Navbar({ handleSignOutButton }) {
         className="nav-brand d-flex align-items-start p-2"
         id="app-name"
       >
-        <i className="fas fa-graduation-cap" id="logo"></i>Edu <span>App</span>
+        <i className="fas fa-graduation-cap fa-md" id="logo"></i>Edu{" "}
+        <span>App</span>
       </Link>
       <button
         className="navbar-toggler"
         type="button"
         data-toggle="collapse"
         data-target="#navbarSupportedContent"
-        aria-controls="navbarSupportedContent"
-        aria-expanded="false"
-        aria-label="Toggle navigation"
       >
         <span className="navbar-toggler-icon"></span>
       </button>
 
       <div className="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul className="nav ml-auto d-block d-md-flex">
-          <Link to="/questions" className="nav-link py-1">
-            Public QnA
-          </Link>
-          <Link to="/articles" className="nav-link py-1">
-            Public Articles
-          </Link>
-          <button
-            onClick={handleSignOutButton}
-            className="btn btn-md btn-outline-danger py-1 mr-2"
-          >
-            Logout
-          </button>
+        <ul className="navbar-nav ml-auto mr-md-2">
+          <li className="nav-item">
+            <Link to="/questions" className="nav-link py-1">
+              Public QnA
+            </Link>
+          </li>
+          <li className="nav-item">
+            <Link to="/articles" className="nav-link py-1">
+              Public Articles
+            </Link>
+          </li>
+          <li className="nav-item">
+            <button
+              onClick={handleSignOutButton}
+              className="btn btn-md btn-outline-danger py-1 ml-3 mb-2 mb-md-0"
+            >
+              Logout
+            </button>
+          </li>
         </ul>
       </div>
     </nav>
