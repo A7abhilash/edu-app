@@ -24,7 +24,7 @@ function App() {
     event.preventDefault();
     await userSignOut();
   };
-
+ 
   useEffect(() => {
     if (window.navigator.onLine) {
       setLoading(true);

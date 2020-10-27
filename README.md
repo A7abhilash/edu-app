@@ -1,12 +1,13 @@
-> > All the code are in src folder and App.js is the starting file
+> All the code are in src folder and App.js is the starting file
 
-## To get started;
+## To get started:
 
-####clone this repo  
-####RUN npm install  
-####RUN npm start
+> > Clone this repo  
+> > RUN npm install  
+> > RUN npm start  
+> > Copy the firebase rules in src/firebaseRules.txt and paste it on the project's firebase rules in firebase console
 
--------------------------------------Additional-----------------------------------------  
+-----------------------------------------Additional-----------------------------------------------  
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
