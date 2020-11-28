@@ -1,6 +1,6 @@
 # Edu-App
 
-> This is my contribution as an intern at Sitex Digitech.
+> This is my contribution as a fullstack web intern at Sitex Digitech.
 
 **The features that I have worked on are:**
 
