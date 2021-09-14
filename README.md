@@ -15,5 +15,5 @@
 
 
 <div align="center">
-<img src="./eduApp1.png" style="border-radius:5px;" alt="Dashboard" height="200">
+<img src="./eduApp1.png" style="border-radius:5px;" alt="Dashboard">
 </div>
